@@ -19,8 +19,8 @@ Minimal infrastructure for a registry of executable linguistic codebooks. The fi
 - [x] Static registry UI included.
 - [x] Public GitHub repository created.
 - [x] License split documented: MIT for software/infrastructure; CC BY 4.0 for content/metadata unless otherwise stated.
-- [ ] Real codebook migrated from an active annotation project.
-- [ ] Complete empirical validation record added.
+- [x] First real codebook package added: CGELBank core category/function package.
+- [x] Complete source-literature validation record added for the published CGELBank IAA study.
 - [ ] Governance model defined.
 
 ## Files
@@ -38,6 +38,7 @@ Minimal infrastructure for a registry of executable linguistic codebooks. The fi
 
 ## Next Actions
 
-1. Choose the first real codebook to encode.
-2. Define governance before inviting contributions.
-3. Decide whether to enable GitHub Pages for the static registry UI.
+1. Define governance before inviting contributions.
+2. Decide whether to enable GitHub Pages for the static registry UI.
+3. Add a pinned-rerun validation record for a specific CGELBank repository commit if this becomes more than a literature-summary package.
+4. Choose the next real codebook after CGELBank, preferably one with an LLM/hybrid preannotation layer.

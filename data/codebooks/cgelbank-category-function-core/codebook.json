@@ -1,0 +1,363 @@
+{
+  "schema_version": "0.1.0",
+  "id": "cgelbank-category-function-core",
+  "title": "CGELBank core category/function codebook",
+  "version": "0.1.0",
+  "status": "reviewed",
+  "authors": [
+    {
+      "name": "Brett Reynolds",
+      "affiliation": "Humber College"
+    },
+    {
+      "name": "Aryaman Arora",
+      "affiliation": "Georgetown University"
+    },
+    {
+      "name": "Nathan Schneider",
+      "affiliation": "Georgetown University"
+    }
+  ],
+  "description": "A narrow registry package for CGELBank's core representation of English syntax: node categories, incoming-edge functions, and projection-spine conventions. It summarizes the codebook-like layer documented in the CGELBank manual and the published annotation study, not the full CGELBank annotation system.",
+  "annotation_target": {
+    "phenomenon": "CGELBank-style English syntax tree representation",
+    "unit": "tree node and incoming edge in a CGELBank-style constituency tree",
+    "definition": "Each relevant constituent node receives one category label, and most non-root nodes also receive a function label for the relation to the parent constituent. The package covers the core distinction between categories and functions plus the projection requirements documented for CGELBank.",
+    "inclusion_criteria": [
+      "The item is a lexical node, phrasal node, non-headed category, gap terminal, or incoming-edge function in a CGELBank-style tree.",
+      "The decision concerns the core category/function/projection layer rather than a phenomenon-specific construction analysis.",
+      "The analysis is intended to follow CGELBank documentation derived from CGEL and its companion materials."
+    ],
+    "exclusion_criteria": [
+      "Fine-grained construction policies not needed for the core category/function inventory.",
+      "Automatic conversion from UD/PTB into CGELBank where conversion-specific heuristics rather than core annotation decisions are at issue.",
+      "Claims about speaker cognition, acceptability, or processing.",
+      "LLM-generated annotations without a separate instrument-validation record."
+    ],
+    "source_domains": [
+      "CGELBank documentation, Reynolds, Schneider, and Arora 2022/2023",
+      "Reynolds, Arora, and Schneider 2023 interannotator study on English Web Treebank sentences",
+      "CGELBank public repository at https://github.com/nert-nlp/cgel/"
+    ]
+  },
+  "projection_target": {
+    "field": "syntactic annotation and treebank validation",
+    "supported_question": "Can trained annotators and validators produce comparable CGELBank-style English syntax trees under a declared category/function formalism?",
+    "inference_type": "measurement_calibration",
+    "target_description": "The target inference is consistency of CGELBank-style structural annotation for English treebanking, especially tree comparison, validator effects, and parser/treebank conformance against a declared representation."
+  },
+  "scope": {
+    "languages": [
+      "English"
+    ],
+    "registers": [
+      "English Web Treebank sentences in the published IAA study",
+      "CGELBank naturally occurring sentences across documented project splits"
+    ],
+    "corpora": [
+      "CGELBank",
+      "English Web Treebank subset used for the reported IAA study"
+    ],
+    "period": "present-day English as represented in CGELBank documentation and the 2023 annotation study",
+    "unit_of_analysis": "syntax-tree node or incoming edge",
+    "exclusions": [
+      "This package does not encode the whole CGELBank manual.",
+      "This package does not validate LLM annotation.",
+      "This package does not claim coverage for all English constructions."
+    ]
+  },
+  "input_assumptions": [
+    "The input is tokenized for CGELBank-style tree annotation, including gap terminals where relevant.",
+    "Annotators have access to the CGELBank manual and CGEL/SIEG2 for substantive construction analysis.",
+    "The task is structural annotation of English syntax, not semantic role labelling or dependency-only annotation.",
+    "Root nodes receive category labels; most other nodes receive both a category and an incoming-edge function."
+  ],
+  "labels": [
+    {
+      "id": "node-category",
+      "name": "Node category",
+      "definition": "The constituent type assigned to a tree node, including lexical categories, phrasal projections, non-headed categories, and gap terminals as documented for CGELBank.",
+      "positive_cues": [
+        "The label identifies what kind of constituent the node is.",
+        "Lexical categories normally project corresponding phrasal categories, subject to CGELBank's documented exceptions.",
+        "Non-headed categories such as Coordination and GAP are represented as categories rather than functions."
+      ],
+      "negative_cues": [
+        "A grammatical relation to the parent is a function label rather than a node category.",
+        "A discourse role, semantic role, or dependency-only relation is outside this core category layer."
+      ],
+      "examples": [
+        {
+          "text": "some children",
+          "source": "CGELBank documentation, unary-branching example",
+          "expected_label": "DP and Nom phrasal projections over D and N lexical nodes",
+          "rationale": "CGELBank documents that nodes are not omitted in unary branches, so a determinative and noun project the relevant phrase levels."
+        }
+      ],
+      "anti_examples": [
+        {
+          "text": "Head",
+          "source": "CGELBank documentation, function taxonomy",
+          "expected_label": "edge-function",
+          "rationale": "Head is a function label, not a node category."
+        }
+      ]
+    },
+    {
+      "id": "edge-function",
+      "name": "Incoming-edge function",
+      "definition": "The grammatical function of a constituent in relation to its parent, displayed on the node for convenience but applying to the incoming edge.",
+      "positive_cues": [
+        "The label states the constituent's role in the larger phrase or clause.",
+        "Core examples include Head, Obj, Subj, Mod, Comp, Det, Coordinate, Marker, Supplement, and Flat.",
+        "Function labels are distinct from category labels even when the ordinary-language terms are similar."
+      ],
+      "negative_cues": [
+        "A constituent type such as NP, VP, Nom, Clause, D, or N is a category label.",
+        "A lexical item by itself is not a function label."
+      ],
+      "examples": [
+        {
+          "text": "eat apples",
+          "source": "CGELBank documentation, branching-and-labeling examples",
+          "expected_label": "Head for eat; Obj for apples",
+          "rationale": "The verb heads the VP and the NP bears the object function."
+        }
+      ],
+      "anti_examples": [
+        {
+          "text": "NP",
+          "source": "CGELBank documentation, category inventory",
+          "expected_label": "node-category",
+          "rationale": "NP is a phrasal category rather than a function."
+        }
+      ]
+    },
+    {
+      "id": "projection-conformance",
+      "name": "Projection conformance",
+      "definition": "Whether the tree respects CGELBank's core projection-spine requirements, including phrasal projection of lexical categories and required Nom/VP layers where documented.",
+      "positive_cues": [
+        "Lexical nodes project the corresponding phrasal category unless a documented exception applies.",
+        "NPs are headed by Nom or another NP level; clauses are headed by VP or another clause level.",
+        "Modifiers are layered rather than freely combined with complements at the same level unless a documented exception applies."
+      ],
+      "negative_cues": [
+        "CGEL print examples may omit unary nodes; CGELBank generally does not.",
+        "A semantically plausible dependency does not override the documented projection-spine requirement."
+      ],
+      "examples": [
+        {
+          "text": "some children",
+          "source": "CGELBank documentation, unary-branching discussion",
+          "expected_label": "projection-conformance",
+          "rationale": "The CGELBank representation includes the DP and Nom layers rather than omitting unary branches."
+        }
+      ],
+      "anti_examples": [
+        {
+          "text": "NP directly over D and N in the CGELBank target representation",
+          "source": "Derived contrast from CGELBank documentation's unary-branching policy",
+          "expected_label": "projection-nonconformance",
+          "rationale": "CGELBank documents that nodes are never omitted in this kind of unary branch."
+        }
+      ]
+    },
+    {
+      "id": "outside-core-scope",
+      "name": "Outside core scope",
+      "definition": "The decision belongs to a construction-specific, conversion-specific, semantic, psycholinguistic, or LLM-instrument layer rather than the core category/function/projection package.",
+      "positive_cues": [
+        "The decision requires a detailed construction-specific policy not encoded in this core package.",
+        "The question asks whether an LLM can reproduce the analysis, which requires a separate instrument-validation record.",
+        "The question concerns downstream theoretical interpretation rather than tree representation."
+      ],
+      "negative_cues": [
+        "The question can be resolved by assigning a node category, incoming-edge function, or core projection-spine relation."
+      ],
+      "examples": [],
+      "anti_examples": []
+    }
+  ],
+  "output_schema": {
+    "format": "json",
+    "required_fields": [
+      "record_id",
+      "node_id",
+      "category",
+      "function",
+      "parent_id",
+      "rationale"
+    ],
+    "optional_fields": [
+      "token_span",
+      "lexeme",
+      "features",
+      "gap_index",
+      "source_reference",
+      "validator_warnings"
+    ]
+  },
+  "decision_rules": [
+    {
+      "id": "separate-category-function",
+      "title": "Separate category from function",
+      "priority": 1,
+      "rule": "Assign category labels to nodes and function labels to incoming parent-child relations; do not use a function label as a constituent category or a constituent category as an edge function.",
+      "applies_to": [
+        "node-category",
+        "edge-function"
+      ]
+    },
+    {
+      "id": "preserve-projection-spines",
+      "title": "Preserve CGELBank projection spines",
+      "priority": 2,
+      "rule": "Represent documented CGELBank phrasal projections, including unary branches, unless a documented CGELBank exception applies.",
+      "applies_to": [
+        "node-category",
+        "projection-conformance"
+      ]
+    },
+    {
+      "id": "head-relation-check",
+      "title": "Check headedness and non-headed categories",
+      "priority": 3,
+      "rule": "Headed phrases require the documented Head relation; Coordination and GAP are treated as non-headed categories where the manual says so.",
+      "applies_to": [
+        "edge-function",
+        "node-category",
+        "projection-conformance"
+      ]
+    },
+    {
+      "id": "scope-out-specific-constructions",
+      "title": "Scope out construction-specific policies",
+      "priority": 4,
+      "rule": "If the annotation decision depends on a construction-specific chapter or a later CGELBank policy not encoded here, mark it outside-core-scope and cite the relevant policy rather than extending this core package silently.",
+      "applies_to": [
+        "outside-core-scope"
+      ]
+    }
+  ],
+  "hard_cases": [
+    {
+      "id": "modifier-vs-supplement",
+      "description": "The manual notes that CGEL's description of adjuncts leaves room for uncertainty between modifiers and supplements.",
+      "default_action": "Use the CGELBank manual's default: ordinary time, place, manner, condition, and reason adjuncts are modifiers unless clearly presented as addenda."
+    },
+    {
+      "id": "modifier-vs-complement",
+      "description": "Pre-head dependents in nominals may be complement-like under some descriptions but are treated by CGELBank as modifiers in the documented core policy.",
+      "default_action": "Use the CGELBank manual's modifier treatment for the core package; cite the construction-specific policy if a case falls outside the simple rule."
+    },
+    {
+      "id": "unary-branching",
+      "description": "CGEL print trees may omit phrasal nodes in unary branches, while CGELBank normally represents them.",
+      "default_action": "Preserve the CGELBank phrasal node unless a documented exception applies."
+    },
+    {
+      "id": "flat-multiword-heads",
+      "description": "Multiword names, compounds, and related expressions may require Flat or Compounding rather than ordinary headed modification.",
+      "default_action": "Treat as outside-core-scope unless the needed Flat/Compounding policy is explicitly in the current package."
+    },
+    {
+      "id": "gapping-and-displacement",
+      "description": "Gaps and displaced material were a lower-agreement zone in the published IAA study.",
+      "default_action": "Use the CGELBank manual and validator; do not infer high reliability for gap analysis from the core category/function package alone."
+    }
+  ],
+  "uncertainty": {
+    "allowed_values": [
+      "manual-supported",
+      "validator-warning",
+      "requires-adjudication",
+      "outside-core-scope"
+    ],
+    "default": "requires-adjudication",
+    "interpretation": "Uncertainty records whether a decision is directly supported by this package, flagged by validation, requires expert adjudication, or belongs outside the core package."
+  },
+  "model_interface": {
+    "intended_use": "human_annotation",
+    "structured_output": true,
+    "temperature_recommendation": null,
+    "instrument_assumptions": [
+      "Primary instruments are trained human annotators using the CGELBank manual and validator.",
+      "The package may be used to test parsers or LLMs only after a separate instrument-validation record is created.",
+      "Published IAA results validate trained-human use of the CGELBank framework, not model-independent automatic annotation."
+    ],
+    "forbidden_dependencies": [
+      "Do not infer CGELBank labels from Universal Dependencies labels without a declared conversion layer.",
+      "Do not treat CGEL print-tree abbreviations as CGELBank tree requirements when the manual specifies a fuller representation.",
+      "Do not treat published human IAA as validation of LLM output."
+    ]
+  },
+  "validation_expectations": {
+    "minimum_gold_sample": 50,
+    "human_adjudication_required": true,
+    "cross_instrument_required": false,
+    "target_metrics": [
+      "tree edit distance based labelled flex F1",
+      "unlabelled constituent F1",
+      "strict labelled F1",
+      "gap F1",
+      "full-tree exact match",
+      "validator effect on agreement with adjudicated trees"
+    ],
+    "disagreement_taxonomy": [
+      "category disagreement",
+      "function disagreement",
+      "insertion/deletion or attachment disagreement",
+      "gap placement or antecedent disagreement",
+      "structured names and measurements",
+      "modifier/complement/supplement boundary"
+    ]
+  },
+  "projectibility_profile": {
+    "supported_inferences": [
+      {
+        "claim": "The core CGELBank category/function formalism can support consistent trained-human annotation of English syntax trees.",
+        "scope": "English sentences like those in the reported CGELBank EWT IAA sample and related documented CGELBank splits.",
+        "evidence_required": "Published IAA metrics, adjudication protocol, validator effects, and manual-backed annotation decisions."
+      },
+      {
+        "claim": "The codebook can support treebank/parser conformance checks against a declared CGELBank representation.",
+        "scope": "Core category, function, projection-spine, and validator-facing structural decisions.",
+        "evidence_required": "A valid tree format, a validator run, and comparison against adjudicated CGELBank-style trees."
+      }
+    ],
+    "unsupported_inferences": [
+      "No claim that this package encodes all of CGELBank.",
+      "No claim that CGELBank exhausts English syntax.",
+      "No claim about speaker cognition or processing.",
+      "No claim that LLMs can annotate CGELBank reliably without separate validation.",
+      "No claim that UD/PTB labels can be losslessly converted into CGELBank categories and functions from this package alone."
+    ],
+    "scope_conditions": [
+      "Annotators must use the CGELBank manual or equivalent policy source.",
+      "Tree comparison should report the metric used, since strict, flex, gap, and full-tree scores answer different questions.",
+      "Validator warnings must be treated as prompts for review, not automatic proof of error.",
+      "Construction-specific extensions should be versioned rather than silently folded into the core package."
+    ],
+    "failure_zones": [
+      "Gapping and displacement.",
+      "Structured names and measurements.",
+      "Modifier, complement, and supplement boundaries.",
+      "Flat multiword heads and compounding.",
+      "Cases where CGELBank deliberately diverges from CGEL's printed representation."
+    ],
+    "demotion_triggers": [
+      "New annotators cannot reproduce the category/function separation after training.",
+      "Validator warnings concentrate in a structural zone not represented in the package.",
+      "Full-tree exact match is treated as the sole reliability criterion despite known partial-agreement structure.",
+      "A model/parser is evaluated against this package without a separate instrument-specific validation record."
+    ]
+  },
+  "provenance": {
+    "created": "2026-07-04",
+    "updated": "2026-07-04",
+    "license": "CC BY 4.0",
+    "notes": "Source-grounded micro-package based on the local CGELBank documentation PDF and the 2023 LAW paper. It summarizes a narrow core layer rather than the full annotation manual."
+  }
+}
+

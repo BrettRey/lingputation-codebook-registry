@@ -1,0 +1,192 @@
+{
+  "schema_version": "0.1.0",
+  "id": "cgelbank-category-function-core-validation",
+  "codebook_id": "cgelbank-category-function-core",
+  "codebook_version": "0.1.0",
+  "validation_date": "2023-07-13",
+  "status": "complete",
+  "validators": [
+    {
+      "name": "Brett Reynolds",
+      "role": "CGELBank annotator and study author"
+    },
+    {
+      "name": "Nathan Schneider",
+      "role": "CGELBank annotator and study author"
+    },
+    {
+      "name": "Aryaman Arora",
+      "role": "CGELBank study author"
+    }
+  ],
+  "sample": {
+    "name": "CGELBank 50-sentence interannotator-agreement sample",
+    "size": 50,
+    "sampling_frame": "Fifty new sentences sampled from the English Web Treebank for the interannotator study reported in Reynolds, Arora, and Schneider 2023.",
+    "source": "English Web Treebank sentences as used in the CGELBank IAA study",
+    "exclusions": [
+      "This validation record summarizes the published CGELBank IAA study; it does not rerun the scorer.",
+      "The record validates trained-human CGELBank annotation, not LLM annotation."
+    ]
+  },
+  "human_adjudication": {
+    "performed": true,
+    "adjudicators": 2,
+    "protocol": "Two annotators independently annotated the 50-sentence EWT sample, received validator output after the initial pass, revised, and then jointly adjudicated disagreements.",
+    "notes": "The paper reports a five-sentence pilot before the 50-sentence study and cooperative adjudication using a text editor with file-comparison mode."
+  },
+  "instruments": [
+    {
+      "id": "trained-human-annotators",
+      "kind": "human",
+      "access_type": "manual",
+      "version": "Reynolds and Schneider annotator pair in Reynolds, Arora, and Schneider 2023",
+      "settings": {
+        "annotation_manual": "CGELBank documentation, approximately 75 pages in the 2023 report",
+        "annotation_tooling": "Active DOP plus CGELBank .cgel workflow as reported"
+      },
+      "run_date": "2023-07-13",
+      "notes": "The publication date is used as the validation date for this literature-summary record."
+    },
+    {
+      "id": "cgelbank-validator",
+      "kind": "rule_based",
+      "access_type": "other",
+      "version": "CGELBank validator as reported in Reynolds, Arora, and Schneider 2023",
+      "settings": {
+        "reported_size": "approximately 500 lines of Python",
+        "checks": "misspelled labels, phrases with no Head, unusual category positions, unnecessary nesting, modifier branching, gap coindexation, coordination structure"
+      },
+      "run_date": "2023-07-13",
+      "notes": "The exact validator version is not restated in this registry record; see the CGELBank repository and reported IAA output."
+    }
+  ],
+  "metrics": [
+    {
+      "name": "unlabelled-constituent-f1",
+      "value": 94.8,
+      "interpretation": "Microaveraged F1 for tree structure alone between the two annotators after validation, from Table 4."
+    },
+    {
+      "name": "flex-labelled-f1",
+      "value": 93.9,
+      "interpretation": "Main tree-edit-distance flex metric between the two annotators after validation, from Table 4."
+    },
+    {
+      "name": "strict-labelled-f1",
+      "value": 91.6,
+      "interpretation": "Strict labelled F1 between the two annotators after validation, from Table 4."
+    },
+    {
+      "name": "gap-f1",
+      "value": 87.2,
+      "interpretation": "Gap F1 between the two annotators after validation, from Table 4."
+    },
+    {
+      "name": "full-tree-exact-match",
+      "value": 18.0,
+      "interpretation": "Percentage of trees identical between the two annotators after validation, from Table 4."
+    },
+    {
+      "name": "validator-effect-annotator-agreement",
+      "value": "93.2 -> 93.9 flex F1",
+      "interpretation": "The paper reports improved flex agreement between annotators after validator feedback."
+    },
+    {
+      "name": "validator-effect-a1-to-adjudicated",
+      "value": "96.8 -> 97.6 flex F1",
+      "interpretation": "The paper reports improved agreement between annotator 1 and the adjudicated trees after validator feedback."
+    },
+    {
+      "name": "validator-effect-a2-to-adjudicated",
+      "value": "95.3 -> 95.5 flex F1",
+      "interpretation": "The paper reports improved agreement between annotator 2 and the adjudicated trees after validator feedback."
+    }
+  ],
+  "disagreement_analysis": [
+    {
+      "class": "function-disagreement",
+      "description": "Among aligned nodes in the flex comparison, function disagreements were more numerous than category disagreements.",
+      "action": "Keep category/function separation explicit and track function disagreements as their own error class."
+    },
+    {
+      "class": "category-disagreement",
+      "description": "The published cost breakdown reports category disagreements among substitution costs.",
+      "action": "Report category disagreements separately from function disagreements in future validation records."
+    },
+    {
+      "class": "gap-disagreement",
+      "description": "The paper reports lower gap F1 and identifies a shared-object coordination case as a major source of disagreement.",
+      "action": "Treat gapping and displacement as a named failure zone rather than assuming core-category agreement transfers automatically."
+    },
+    {
+      "class": "names-and-measurements",
+      "description": "The paper identifies structured names and measurements as qualitative sources of uncertainty and disagreement.",
+      "action": "Version construction-specific policies for names, measurements, currency, age, and temperature expressions."
+    },
+    {
+      "class": "attachment-and-node-presence",
+      "description": "Insertion/deletion costs and validator warnings reflect attachment differences and missing or extra projection layers.",
+      "action": "Keep projection-spine rules and validator output attached to any downstream conformance check."
+    }
+  ],
+  "calibration_notes": [
+    "The flex metric is the main reported metric because it gives partial credit for category, function, lexical, and gap-antecedent components.",
+    "Full-tree exact match is much stricter than the flex metric and should not be used alone as the reliability summary.",
+    "Validator output improved agreement but was not treated as automatic adjudication."
+  ],
+  "downstream_checks": [
+    {
+      "name": "trained-human CGELBank annotation consistency",
+      "status": "complete",
+      "result": "The 2023 paper reports flex F1 of 93.9 between annotators after validation on 50 EWT sentences."
+    },
+    {
+      "name": "LLM or parser instrument validation",
+      "status": "not_run",
+      "result": "No LLM or parser validation is claimed in this registry record."
+    },
+    {
+      "name": "treebank/parser conformance check",
+      "status": "planned",
+      "result": "A future record should rerun validator and scorer outputs against a pinned CGELBank version."
+    }
+  ],
+  "scope_update": {
+    "changes_required": false,
+    "summary": "The validation supports a reviewed core package for trained-human CGELBank annotation. It does not expand the package to full CGELBank, automatic conversion, LLM annotation, or parser performance."
+  },
+  "artifacts": [
+    {
+      "kind": "public-repository",
+      "path_or_uri": "https://github.com/nert-nlp/cgel/",
+      "description": "CGELBank public repository cited in the documentation and 2023 paper."
+    },
+    {
+      "kind": "reported-iaa-output",
+      "path_or_uri": "https://github.com/nert-nlp/cgel/blob/b95309f6c2ada885728b80a21b6d576bd85a20c9/datasets/iaa/iaa.out",
+      "description": "IAA scorer output URL reported in Reynolds, Arora, and Schneider 2023."
+    },
+    {
+      "kind": "source-publication",
+      "path_or_uri": "Reynolds, Arora, and Schneider 2023, Proceedings of LAW-XVII, pp. 220-234",
+      "description": "Source for annotation process, validation, IAA metrics, and qualitative disagreement discussion."
+    },
+    {
+      "kind": "source-documentation",
+      "path_or_uri": "CGELBank documentation PDF in local CGELbank project folder",
+      "description": "Source for category/function/projection-spine policies summarized in this package."
+    }
+  ],
+  "conclusion": {
+    "validity_scope": "Reviewed literature-summary validation for trained-human CGELBank core category/function/projection annotation on English treebank sentences.",
+    "supports_registry_release": true,
+    "limitations": [
+      "The registry record summarizes published results rather than rerunning the scorer.",
+      "The package covers the core representation only, not every CGELBank construction policy.",
+      "No LLM, API-model, or local-model instrument has been validated.",
+      "Gap analysis, structured names, measurements, and attachment/projection-layer decisions remain named failure zones."
+    ]
+  }
+}
+

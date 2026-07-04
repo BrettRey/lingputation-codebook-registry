@@ -54,3 +54,8 @@ Open `index.html` in a browser to inspect the registry. If local browser restric
 ## Status
 
 This is an initial local scaffold. It is not a hosted registry and has no public governance model yet.
+
+## Seeded Packages
+
+- `example-intensifier-codebook`: toy infrastructure exemplar; not empirically validated.
+- `cgelbank-category-function-core`: reviewed micro-package for CGELBank core category/function/projection conventions, with validation summarized from the published 50-sentence CGELBank interannotator-agreement study.

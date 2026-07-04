@@ -9,3 +9,7 @@
 2026-07-04 -- Published the scaffold as public GitHub repository `BrettRey/lingputation-codebook-registry`. Reason: Brett asked to make the infrastructure public.
 
 2026-07-04 -- Documented a license split: MIT for software, scripts, schemas, and interface code; CC BY 4.0 for codebook specifications, registry metadata, validation-record content, examples, and documentation unless a registry entry states otherwise. Reason: this is both software infrastructure and a scholarly registry/content format.
+
+2026-07-04 -- Added `cgelbank-category-function-core` as the first real, non-toy registry package. Reason: CGELBank is a source-grounded annotation infrastructure precedent with a manual, validator, IAA study, category/function separation, and documented failure zones.
+
+2026-07-04 -- Scoped the CGELBank package to core category/function/projection conventions rather than the full annotation manual. Reason: a first registry package should demonstrate the method without pretending to encode every CGELBank construction policy.
