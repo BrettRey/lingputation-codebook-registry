@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/lingputation/validation-record.schema.json",
+  "title": "Lingputation validation record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "codebook_id",
+    "codebook_version",
+    "validation_date",
+    "status",
+    "validators",
+    "sample",
+    "human_adjudication",
+    "instruments",
+    "metrics",
+    "disagreement_analysis",
+    "calibration_notes",
+    "downstream_checks",
+    "scope_update",
+    "artifacts",
+    "conclusion"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "id": {
+      "$ref": "#/$defs/slug"
+    },
+    "codebook_id": {
+      "$ref": "#/$defs/slug"
+    },
+    "codebook_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-.][A-Za-z0-9.-]+)?$"
+    },
+    "validation_date": {
+      "$ref": "#/$defs/date"
+    },
+    "status": {
+      "enum": ["template", "planned", "in_progress", "complete", "superseded"]
+    },
+    "validators": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/personRole"
+      },
+      "minItems": 1
+    },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "size", "sampling_frame", "source", "exclusions"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sampling_frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "human_adjudication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["performed", "adjudicators", "protocol", "notes"],
+      "properties": {
+        "performed": {
+          "type": "boolean"
+        },
+        "adjudicators": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "instruments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/instrument"
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/metric"
+      }
+    },
+    "disagreement_analysis": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/disagreementClass"
+      }
+    },
+    "calibration_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "downstream_checks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/downstreamCheck"
+      }
+    },
+    "scope_update": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["changes_required", "summary"],
+      "properties": {
+        "changes_required": {
+          "type": "boolean"
+        },
+        "summary": {
+          "type": "string"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "conclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["validity_scope", "supports_registry_release", "limitations"],
+      "properties": {
+        "validity_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "supports_registry_release": {
+          "type": "boolean"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "personRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "access_type", "version", "settings", "run_date", "notes"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/slug"
+        },
+        "kind": {
+          "enum": ["human", "llm", "local_model", "rule_based", "other"]
+        },
+        "access_type": {
+          "enum": ["not_run", "local", "pinned_api", "floating_api", "manual", "other"]
+        },
+        "version": {
+          "type": "string"
+        },
+        "settings": {
+          "type": "object"
+        },
+        "run_date": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value", "interpretation"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": ["number", "string", "null"]
+        },
+        "interpretation": {
+          "type": "string"
+        }
+      }
+    },
+    "disagreementClass": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "description", "action"],
+      "properties": {
+        "class": {
+          "$ref": "#/$defs/slug"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "downstreamCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status", "result"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": ["not_run", "planned", "complete"]
+        },
+        "result": {
+          "type": "string"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path_or_uri", "description"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path_or_uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+

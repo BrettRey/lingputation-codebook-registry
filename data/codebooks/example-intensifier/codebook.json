@@ -1,0 +1,268 @@
+{
+  "schema_version": "0.1.0",
+  "id": "example-intensifier-codebook",
+  "title": "Toy English intensifier codebook",
+  "version": "0.1.0",
+  "status": "draft",
+  "authors": [
+    {
+      "name": "Brett Reynolds"
+    }
+  ],
+  "description": "Toy infrastructure exemplar for a codebook-as-program. It is not an empirically validated codebook.",
+  "annotation_target": {
+    "phenomenon": "English degree intensifier candidates",
+    "unit": "candidate token in sentential context",
+    "definition": "A candidate token is labelled as an intensifier when its local function is to scale the degree of a gradable expression.",
+    "inclusion_criteria": [
+      "The candidate has a local degree-scaling relation to a gradable adjective, adverb, verb phrase, or quantificational expression.",
+      "The candidate's contribution is part of the described clause rather than a metalinguistic aside."
+    ],
+    "exclusion_criteria": [
+      "Focus particles whose main contribution is exhaustivity or contrast rather than degree scaling.",
+      "Discourse markers whose main contribution is stance or turn management.",
+      "Homographs used in non-degree functions."
+    ],
+    "source_domains": [
+      "constructed toy examples only"
+    ]
+  },
+  "projection_target": {
+    "field": "corpus linguistics",
+    "supported_question": "Can a fixed annotation procedure support within-register frequency comparisons of degree-intensifier candidates?",
+    "inference_type": "frequency_comparison",
+    "target_description": "The intended downstream inference is a register-internal frequency comparison after validation, not a claim about speaker cognition or semantic representation."
+  },
+  "scope": {
+    "languages": [
+      "English"
+    ],
+    "registers": [
+      "toy example"
+    ],
+    "corpora": [
+      "none"
+    ],
+    "period": "not applicable",
+    "unit_of_analysis": "candidate token",
+    "exclusions": [
+      "No corpus, historical, dialectal, or psycholinguistic coverage is claimed for this exemplar."
+    ]
+  },
+  "input_assumptions": [
+    "Each candidate token is supplied with enough local context to identify the expression it may modify.",
+    "The input record identifies the candidate string and its sentence or clause context.",
+    "The annotator may abstain when the local function cannot be resolved."
+  ],
+  "labels": [
+    {
+      "id": "intensifier",
+      "name": "Intensifier",
+      "definition": "The candidate locally scales the degree of a gradable expression.",
+      "positive_cues": [
+        "The candidate answers a degree question such as how much or to what extent.",
+        "Removing the candidate changes degree without changing the propositional frame."
+      ],
+      "negative_cues": [
+        "The candidate selects a focus alternative set without degree scaling.",
+        "The candidate is part of an idiom whose contribution is not locally recoverable."
+      ],
+      "examples": [
+        {
+          "text": "The result was very clear.",
+          "source": "constructed toy example; not corpus evidence",
+          "expected_label": "intensifier",
+          "rationale": "Very scales the gradable adjective clear."
+        }
+      ],
+      "anti_examples": [
+        {
+          "text": "Only the result was clear.",
+          "source": "constructed toy example; not corpus evidence",
+          "expected_label": "not-intensifier",
+          "rationale": "Only marks focus/exhaustivity rather than degree."
+        }
+      ]
+    },
+    {
+      "id": "not-intensifier",
+      "name": "Not intensifier",
+      "definition": "The candidate does not locally scale the degree of a gradable expression.",
+      "positive_cues": [
+        "The candidate marks focus, discourse stance, polarity, or another non-degree relation.",
+        "The candidate is quoted, mentioned, or otherwise outside ordinary clause interpretation."
+      ],
+      "negative_cues": [
+        "The candidate directly modifies a gradable expression.",
+        "The candidate can be paraphrased as increasing or decreasing degree."
+      ],
+      "examples": [
+        {
+          "text": "Only the result was clear.",
+          "source": "constructed toy example; not corpus evidence",
+          "expected_label": "not-intensifier",
+          "rationale": "Only does not scale the degree of clear."
+        }
+      ],
+      "anti_examples": [
+        {
+          "text": "The result was extremely clear.",
+          "source": "constructed toy example; not corpus evidence",
+          "expected_label": "intensifier",
+          "rationale": "Extremely scales the gradable adjective clear."
+        }
+      ]
+    },
+    {
+      "id": "abstain",
+      "name": "Abstain",
+      "definition": "The local evidence is insufficient for the declared decision rules.",
+      "positive_cues": [
+        "The candidate's scope cannot be recovered from the supplied context.",
+        "The candidate sits in a quotation, repair, or fragment where ordinary clause function is unclear."
+      ],
+      "negative_cues": [
+        "The candidate has a clear local degree-scaling target.",
+        "The candidate clearly has a non-degree function."
+      ],
+      "examples": [],
+      "anti_examples": []
+    }
+  ],
+  "output_schema": {
+    "format": "json",
+    "required_fields": [
+      "record_id",
+      "candidate",
+      "label",
+      "confidence",
+      "rationale"
+    ],
+    "optional_fields": [
+      "span",
+      "target_expression",
+      "hard_case_type",
+      "notes"
+    ]
+  },
+  "decision_rules": [
+    {
+      "id": "degree-target-first",
+      "title": "Find the degree target first",
+      "priority": 1,
+      "rule": "Assign intensifier only if the candidate has a local gradable target in the supplied context.",
+      "applies_to": [
+        "intensifier",
+        "not-intensifier"
+      ]
+    },
+    {
+      "id": "focus-over-degree",
+      "title": "Do not treat focus alone as intensification",
+      "priority": 2,
+      "rule": "If the candidate's main contribution is focus, contrast, or exhaustivity and no independent degree target is present, assign not-intensifier.",
+      "applies_to": [
+        "not-intensifier"
+      ]
+    },
+    {
+      "id": "abstain-on-missing-context",
+      "title": "Abstain when scope is unrecoverable",
+      "priority": 3,
+      "rule": "If the candidate's local scope or target cannot be recovered from the supplied context, assign abstain rather than guessing.",
+      "applies_to": [
+        "abstain"
+      ]
+    }
+  ],
+  "hard_cases": [
+    {
+      "id": "degree-vs-focus",
+      "description": "Candidate may plausibly be either degree-scaling or focus-marking.",
+      "default_action": "Apply the degree-target-first rule; abstain if no local target can be identified."
+    },
+    {
+      "id": "quoted-language",
+      "description": "Candidate appears inside quoted or mentioned language.",
+      "default_action": "Annotate only if the quoted material is within the declared annotation target; otherwise abstain."
+    }
+  ],
+  "uncertainty": {
+    "allowed_values": [
+      "high",
+      "medium",
+      "low",
+      "abstain"
+    ],
+    "default": "abstain",
+    "interpretation": "Confidence records decision stability under the codebook, not psychological certainty."
+  },
+  "model_interface": {
+    "intended_use": "hybrid_preannotation",
+    "structured_output": true,
+    "temperature_recommendation": 0,
+    "instrument_assumptions": [
+      "The instrument can return JSON matching the output schema.",
+      "The instrument receives the same codebook text and candidate context for each run.",
+      "The instrument is treated as a measurement aid whose outputs require validation."
+    ],
+    "forbidden_dependencies": [
+      "Do not rely on model-specific hidden memory.",
+      "Do not infer corpus frequencies from model priors.",
+      "Do not use examples as empirical evidence."
+    ]
+  },
+  "validation_expectations": {
+    "minimum_gold_sample": 50,
+    "human_adjudication_required": true,
+    "cross_instrument_required": true,
+    "target_metrics": [
+      "human agreement on adjudicated gold sample",
+      "cross-instrument agreement on held-out candidates",
+      "disagreement class distribution",
+      "effect of abstention on downstream frequency estimates"
+    ],
+    "disagreement_taxonomy": [
+      "degree-vs-focus",
+      "scope-unrecoverable",
+      "quoted-language",
+      "idiomatic-use"
+    ]
+  },
+  "projectibility_profile": {
+    "supported_inferences": [
+      {
+        "claim": "After validation, labels may support within-register frequency comparisons of degree-intensifier candidates.",
+        "scope": "The same register, sampling frame, candidate extraction procedure, and codebook version.",
+        "evidence_required": "Gold adjudication plus cross-instrument agreement and stable disagreement classes."
+      }
+    ],
+    "unsupported_inferences": [
+      "No claim about individual speaker cognition.",
+      "No claim about all English registers.",
+      "No claim about diachronic change without a separate measurement-drift check."
+    ],
+    "scope_conditions": [
+      "Candidate extraction must be held fixed.",
+      "The same codebook version must be used across compared samples.",
+      "Abstentions must be reported rather than silently dropped."
+    ],
+    "failure_zones": [
+      "Focus particles with degree-like paraphrases.",
+      "Quoted language and metalinguistic mention.",
+      "Idiomatic or lexicalized combinations."
+    ],
+    "demotion_triggers": [
+      "Cross-instrument disagreement concentrates in a single label without a rule-level explanation.",
+      "Human adjudicators cannot apply the degree-target-first rule consistently.",
+      "Abstention rates differ sharply across registers being compared."
+    ]
+  },
+  "provenance": {
+    "created": "2026-07-04",
+    "updated": "2026-07-04",
+    "license": "CC BY 4.0",
+    "notes": "Toy exemplar for infrastructure testing only."
+  }
+}
+

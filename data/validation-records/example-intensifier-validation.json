@@ -1,0 +1,70 @@
+{
+  "schema_version": "0.1.0",
+  "id": "example-intensifier-validation",
+  "codebook_id": "example-intensifier-codebook",
+  "codebook_version": "0.1.0",
+  "validation_date": "2026-07-04",
+  "status": "template",
+  "validators": [
+    {
+      "name": "Codex",
+      "role": "infrastructure scaffold generator; not an empirical validator"
+    }
+  ],
+  "sample": {
+    "name": "No empirical sample",
+    "size": 0,
+    "sampling_frame": "Template record only. No corpus or annotation sample has been validated.",
+    "source": "none",
+    "exclusions": [
+      "All empirical claims are excluded from this template record."
+    ]
+  },
+  "human_adjudication": {
+    "performed": false,
+    "adjudicators": 0,
+    "protocol": "not run",
+    "notes": "A real record should describe adjudicator training, blind review, conflict resolution, and final gold labels."
+  },
+  "instruments": [],
+  "metrics": [
+    {
+      "name": "empirical-validation",
+      "value": null,
+      "interpretation": "Not run. This placeholder exists to test the validation-record schema."
+    }
+  ],
+  "disagreement_analysis": [],
+  "calibration_notes": [
+    "No calibration was performed."
+  ],
+  "downstream_checks": [
+    {
+      "name": "within-register frequency comparison",
+      "status": "not_run",
+      "result": "Not tested."
+    }
+  ],
+  "scope_update": {
+    "changes_required": false,
+    "summary": "No empirical scope update because no validation was performed."
+  },
+  "artifacts": [
+    {
+      "kind": "codebook",
+      "path_or_uri": "data/codebooks/example-intensifier/codebook.json",
+      "description": "Toy codebook package used for infrastructure testing."
+    }
+  ],
+  "conclusion": {
+    "validity_scope": "None. Template record only.",
+    "supports_registry_release": false,
+    "limitations": [
+      "No sample.",
+      "No human adjudication.",
+      "No model or instrument runs.",
+      "No downstream inference check."
+    ]
+  }
+}
+

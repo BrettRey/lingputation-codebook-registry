@@ -1,0 +1,467 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/lingputation/codebook.schema.json",
+  "title": "Lingputation codebook package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "version",
+    "status",
+    "authors",
+    "description",
+    "annotation_target",
+    "projection_target",
+    "scope",
+    "input_assumptions",
+    "labels",
+    "output_schema",
+    "decision_rules",
+    "hard_cases",
+    "uncertainty",
+    "model_interface",
+    "validation_expectations",
+    "projectibility_profile",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "id": {
+      "$ref": "#/$defs/slug"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-.][A-Za-z0-9.-]+)?$"
+    },
+    "status": {
+      "enum": ["draft", "reviewed", "released", "deprecated"]
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/person"
+      },
+      "minItems": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "annotation_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phenomenon", "unit", "definition", "inclusion_criteria", "exclusion_criteria", "source_domains"],
+      "properties": {
+        "phenomenon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inclusion_criteria": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "exclusion_criteria": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "source_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "projection_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "supported_question", "inference_type", "target_description"],
+      "properties": {
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "supported_question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inference_type": {
+          "enum": [
+            "classification",
+            "frequency_comparison",
+            "diachronic_trend",
+            "register_comparison",
+            "downstream_modeling",
+            "measurement_calibration",
+            "other"
+          ]
+        },
+        "target_description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["languages", "registers", "corpora", "period", "unit_of_analysis", "exclusions"],
+      "properties": {
+        "languages": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "registers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "corpora": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "period": {
+          "type": "string"
+        },
+        "unit_of_analysis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "input_assumptions": {
+      "$ref": "#/$defs/nonemptyStringArray"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/label"
+      },
+      "minItems": 1
+    },
+    "output_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "required_fields", "optional_fields"],
+      "properties": {
+        "format": {
+          "enum": ["json", "jsonl", "csv", "tsv", "other"]
+        },
+        "required_fields": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "optional_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "decision_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/decisionRule"
+      },
+      "minItems": 1
+    },
+    "hard_cases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hardCase"
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_values", "default", "interpretation"],
+      "properties": {
+        "allowed_values": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "default": {
+          "type": "string",
+          "minLength": 1
+        },
+        "interpretation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "model_interface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intended_use", "structured_output", "temperature_recommendation", "instrument_assumptions", "forbidden_dependencies"],
+      "properties": {
+        "intended_use": {
+          "enum": ["human_annotation", "llm_preannotation", "hybrid_preannotation", "rule_based_annotation", "other"]
+        },
+        "structured_output": {
+          "type": "boolean"
+        },
+        "temperature_recommendation": {
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "instrument_assumptions": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "forbidden_dependencies": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_gold_sample", "human_adjudication_required", "cross_instrument_required", "target_metrics", "disagreement_taxonomy"],
+      "properties": {
+        "minimum_gold_sample": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "human_adjudication_required": {
+          "type": "boolean"
+        },
+        "cross_instrument_required": {
+          "type": "boolean"
+        },
+        "target_metrics": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "disagreement_taxonomy": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        }
+      }
+    },
+    "projectibility_profile": {
+      "$ref": "#/$defs/projectibilityProfile"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["created", "updated", "license", "notes"],
+      "properties": {
+        "created": {
+          "$ref": "#/$defs/date"
+        },
+        "updated": {
+          "$ref": "#/$defs/date"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "person": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "affiliation": {
+          "type": "string"
+        },
+        "orcid": {
+          "type": "string"
+        }
+      }
+    },
+    "nonemptyStringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "source", "expected_label", "rationale"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "label": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "definition", "positive_cues", "negative_cues", "examples", "anti_examples"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/slug"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "positive_cues": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "negative_cues": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/example"
+          }
+        },
+        "anti_examples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/example"
+          }
+        }
+      }
+    },
+    "decisionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "priority", "rule", "applies_to"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/slug"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applies_to": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        }
+      }
+    },
+    "hardCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "default_action"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/slug"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "default_action": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "inference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "scope", "evidence_required"],
+      "properties": {
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_required": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "projectibilityProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supported_inferences", "unsupported_inferences", "scope_conditions", "failure_zones", "demotion_triggers"],
+      "properties": {
+        "supported_inferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inference"
+          },
+          "minItems": 1
+        },
+        "unsupported_inferences": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "scope_conditions": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "failure_zones": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        },
+        "demotion_triggers": {
+          "$ref": "#/$defs/nonemptyStringArray"
+        }
+      }
+    }
+  }
+}
+

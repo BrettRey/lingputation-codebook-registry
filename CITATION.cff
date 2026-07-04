@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this registry scaffold, please cite it as below."
+title: "Lingputation Codebook Registry"
+version: "0.1.0"
+date-released: "2026-07-04"
+authors:
+  - family-names: "Reynolds"
+    given-names: "Brett"
+license: "MIT"
+repository-code: "https://github.com/BrettRey/lingputation-codebook-registry"
+abstract: "Schema-first infrastructure for executable linguistic codebooks, validation records, and declared projectibility profiles."
+
